@@ -3,7 +3,7 @@ package de.cryptone.crypto;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Hashvalue {
+public class Hashvalue implements ICryptalgo {
 	
 	public static byte[] calculerValeurDeHachage(String algorithme, String monMessage) {
 		byte[] digest = null;
