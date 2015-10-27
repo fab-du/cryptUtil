@@ -1,5 +1,3 @@
 package de.cryptone.crypto;
 
-public interface ICryptalgo {
-
-}
+public interface ICryptalgo { }
