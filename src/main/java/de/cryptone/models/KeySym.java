@@ -1,6 +1,6 @@
 package de.cryptone.models;
 
-public class SymKey {
+public class KeySym {
 
 	String symkey;
 

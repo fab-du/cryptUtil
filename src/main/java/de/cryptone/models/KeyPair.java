@@ -1,9 +1,11 @@
 package de.cryptone.models;
 
-public class PairKey {
+public class KeyPair {
 
 	String pubkey;
 	String prikey;
+	String salt;
+
 	public String getPubkey() {
 		return pubkey;
 	}
@@ -17,9 +19,16 @@ public class PairKey {
 		this.prikey = prikey;
 	}
 
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 	@Override
 	public String toString() {
-		return "PairKey [pubkey=" + pubkey + ", prikey=" + prikey + "]";
+		return "KeyPair [pubkey=" + pubkey + ", prikey=" + prikey + ", salt=" + salt + "]";
 	}
+
 
 }

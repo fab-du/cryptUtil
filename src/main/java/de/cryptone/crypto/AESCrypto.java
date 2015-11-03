@@ -6,11 +6,9 @@ import java.util.Base64;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 
-import java.security.InvalidKeyException;
 import java.security.Key; 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
 
@@ -18,6 +16,7 @@ import java.security.SecureRandom;
 public class AESCrypto extends AbstCrypto implements ICryptalgo {
 
 	private Key symkeyFromString( String key ){
+		Security.addProvider( new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		byte[] bytes = key.getBytes();
 		byte[] keybytes = Base64.getDecoder().decode( bytes );
 		Key result = new SecretKeySpec( keybytes,0, keybytes.length, "AES" );
@@ -25,11 +24,13 @@ public class AESCrypto extends AbstCrypto implements ICryptalgo {
 	}
 
 	private Key generateSymkey( ){
+
+		Security.addProvider( new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		KeyGenerator keygen = null;
 		Key symkey = null;
 		
 		try {
-			keygen = KeyGenerator.getInstance("AES");
+			keygen = KeyGenerator.getInstance( "AES");
 			keygen.init(128, new SecureRandom());
 			symkey = keygen.generateKey();
 		} catch (NoSuchAlgorithmException e) {
@@ -67,29 +68,21 @@ public class AESCrypto extends AbstCrypto implements ICryptalgo {
 
 	      Key key = this.symkeyFromString(secretkey);
 
+
 	      if( key == null ) return null;
 	      
 		 try{
 				//cipher = Cipher.getInstance("AES", "BC");
 				cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
+
 				cipher.init(Cipher.ENCRYPT_MODE, key );
 				byte[] stringBytes = message.getBytes();
 				raw = cipher.doFinal(stringBytes);
 
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (NoSuchPaddingException e) {
-				e.printStackTrace();
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-			} catch (IllegalBlockSizeException e) {
-				e.printStackTrace();
-			} catch (BadPaddingException e) {
-				e.printStackTrace();
-			} catch (NoSuchProviderException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				return null;
+			} 
 	     
 	    if( raw == null )
 	    	return null;
@@ -112,26 +105,10 @@ public class AESCrypto extends AbstCrypto implements ICryptalgo {
 		      byte[] raw = Base64.getDecoder().decode(message);
 		      stringBytes = cipher.doFinal(raw);
 		      clearText= new String(stringBytes, "UTF8");
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (NoSuchPaddingException e) {
-				e.printStackTrace();
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IllegalBlockSizeException e) {
-				e.printStackTrace();
-			} catch (BadPaddingException e) {
-				e.printStackTrace();
-			} catch (NoSuchProviderException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (Exception e) {
+				return null;
+			} 
 
-
-	      if( clearText == null )
-	    	  return null;
-	      	  return clearText;
+		return clearText;
 	}
 }

@@ -1,7 +1,6 @@
 package de.cryptone.crypto;
 
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -9,20 +8,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import com.google.gson.Gson;
 
-import de.cryptone.models.PairKey;
 
 public class RSACrypto extends AbstCrypto implements ICryptalgo{
 
@@ -42,7 +35,7 @@ public class RSACrypto extends AbstCrypto implements ICryptalgo{
 
 	public String genertateKey(){
 		Gson gson = new Gson();
-		de.cryptone.models.PairKey pairkey = new PairKey();
+		de.cryptone.models.KeyPair pairkey = new de.cryptone.models.KeyPair();
 		KeyPair keypair = this.generatePairkey();
 		String prikey = this.privatekeyToString(keypair.getPrivate());
 		String pubkey = this.publickeyToString(keypair.getPublic());
@@ -65,16 +58,8 @@ public class RSACrypto extends AbstCrypto implements ICryptalgo{
 				cipher.init(Cipher.ENCRYPT_MODE, key);
 				byte[] stringBytes = message.getBytes();
 				raw = cipher.doFinal(stringBytes);
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (NoSuchPaddingException e) {
-				e.printStackTrace();
-			} catch (IllegalBlockSizeException e) {
-				e.printStackTrace();
-			} catch (BadPaddingException e) {
-				e.printStackTrace();
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				return null;
 			}
 
 		if( raw == null ){
@@ -99,22 +84,10 @@ public class RSACrypto extends AbstCrypto implements ICryptalgo{
 			  byte[] raw = Base64.getDecoder().decode(message);
 		      byte[] stringBytes = cipher.doFinal(raw);
 		      clearText = new String(stringBytes, "UTF8");
-			} catch (InvalidKeyException e) {
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (NoSuchPaddingException e) {
-				e.printStackTrace();
-			} catch (IllegalBlockSizeException e) {
-				e.printStackTrace();
-			} catch (BadPaddingException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			} catch (Exception e) {
+				return null;
+			} 
 
-		if( clearText == null ) 
-			return null;
 			return clearText;	
 	}
 
@@ -150,11 +123,9 @@ public class RSACrypto extends AbstCrypto implements ICryptalgo{
 			keyFactory = KeyFactory.getInstance("RSA");
 			KeySpec privateKeySpec = new PKCS8EncodedKeySpec(prikeybytes);
 			privatekey = keyFactory.generatePrivate(privateKeySpec);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			return null;
+		} 
 
 		return privatekey;
 	}
@@ -167,11 +138,9 @@ public class RSACrypto extends AbstCrypto implements ICryptalgo{
 		try {
 			kf = KeyFactory.getInstance("RSA");
 			publickey = kf.generatePublic(X509publicKey);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			return null;
+		} 
 
 		return publickey;
 	}
