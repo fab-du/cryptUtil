@@ -40,7 +40,8 @@ public class AESCrypto extends AbstCrypto implements ICryptalgo {
 		return symkey;
 	}
 
-	public String genertateKey( ){
+	@Override
+	public String generateKey( ){
 		Key key = this.generateSymkey();
 
 		if( key != null ){

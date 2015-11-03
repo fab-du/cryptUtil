@@ -33,7 +33,8 @@ public class RSACrypto extends AbstCrypto implements ICryptalgo{
 		return keyPair;
 	}
 
-	public String genertateKey(){
+	@Override
+	public String generateKey(){
 		Gson gson = new Gson();
 		de.cryptone.models.KeyPair pairkey = new de.cryptone.models.KeyPair();
 		KeyPair keypair = this.generatePairkey();

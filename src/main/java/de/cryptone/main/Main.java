@@ -6,6 +6,7 @@ import org.bouncycastle.util.encoders.Base64;
 
 import com.google.gson.Gson;
 
+import de.cryptone.crypto.CryptFactor;
 import de.cryptone.crypto.RSAPBECrypto;
 import de.cryptone.models.KeyPair;
 
@@ -13,12 +14,11 @@ public class Main {
 
 
 	public static void main(String[] args) throws Exception {
-	//CryptFactor factor = new CryptFactor();
-	//AbstCrypto rsa =  factor.getInstance( CryptFactor.CRYPT_ASYM_RSA_PBE );
+	CryptFactor factor = new CryptFactor();
+	RSAPBECrypto rsa =  (RSAPBECrypto)factor.getInstance( CryptFactor.CRYPT_ASYM_RSA_PBE );
 
-	RSAPBECrypto rsa = new RSAPBECrypto();
 
-	KeyPair keypair =  rsa.genertateKey("passphrase");
+	KeyPair keypair =  rsa.generateKey("passphrase");
 
 
 	String enc =  rsa.encrypt(keypair.getPubkey(), "message");

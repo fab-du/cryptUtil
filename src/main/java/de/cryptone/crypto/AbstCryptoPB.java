@@ -7,5 +7,5 @@ import de.cryptone.models.KeyPair;
  */
 public abstract class AbstCryptoPB extends AbstCrypto {
 	public abstract String decrypt( final String encrpyted_key, final String passphrase, final String salt, final String message );
-	public abstract KeyPair genertateKey( String passphrase );
+	public abstract KeyPair generateKey( String passphrase );
 }

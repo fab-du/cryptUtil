@@ -24,7 +24,7 @@ public class CryptFactor {
 						CRYPT_AUTH_2FA = "authentication multifactor based";
 
 
-	public static AbstCrypto getInstance(String cryptographietyp ){
+	public static ICryptalgo getInstance(String cryptographietyp ){
 		
 		if( cryptographietyp == null ) return null;
 		if( cryptographietyp.equalsIgnoreCase(CRYPT_ASYM_RSA)){

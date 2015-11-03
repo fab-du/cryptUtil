@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 
 import de.cryptone.models.KeyPair;
 
-public class RSAPBECrypto extends AbstCryptoPB{
+public class RSAPBECrypto extends AbstCryptoPB implements ICryptalgo{
 
 	RSACrypto rsa = new RSACrypto();
 	AESCrypto aes = new AESCrypto();
@@ -27,8 +27,8 @@ public class RSAPBECrypto extends AbstCryptoPB{
 	}
 
 	@Override
-	public KeyPair genertateKey(String passphrase) {
-		de.cryptone.models.KeyPair pairkey = new Gson().fromJson(rsa.genertateKey(), KeyPair.class);
+	public KeyPair generateKey(String passphrase) {
+		de.cryptone.models.KeyPair pairkey = new Gson().fromJson(rsa.generateKey(), KeyPair.class);
 		byte[] salt = this.generateSalt();
 		String secretkey = this.passphraseToKey(passphrase, salt);
 		String encrypted_prikey =  aes.encrypt(secretkey, pairkey.getPrikey());
@@ -51,8 +51,8 @@ public class RSAPBECrypto extends AbstCryptoPB{
 	}
 
 	@Override
-	public String genertateKey() {
-		return rsa.genertateKey();
+	public String generateKey() {
+		return rsa.generateKey();
 	}
 
 	private String passphraseToKey( String passphrase, byte[] salt ){
